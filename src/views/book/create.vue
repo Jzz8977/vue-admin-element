@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Details />
+    <Details :is-edit="isEdit" />
   </div>
 </template>
 
@@ -10,6 +10,11 @@ export default {
   name: 'Create',
   components: {
     Details
+  },
+  data() {
+    return {
+      isEdit: false
+    }
   }
 }
 </script>

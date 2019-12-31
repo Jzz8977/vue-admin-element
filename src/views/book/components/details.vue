@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="postForm" :model="postForm">
+  <el-form ref="postForm" :model="postForm" :rules="ruleForm">
     <Sticky :class-name="'sub-navbar '+ postForm.status">
       <el-button v-if="!isEdit" @click="showGuide">显示帮助</el-button>
       <el-button v-loading="loading" type="success" @click="submitForm">{{ isEdit?'显示帮助':'新增电子书' }}</el-button>
@@ -24,7 +24,7 @@
           </el-form-item>
           <el-row>
             <el-col :span="12" class="form-item-author">
-              <el-form-item :label-width="labelWidth" label="作者：">
+              <el-form-item :label-width="labelWidth" label="作者：" prop="author">
                 <el-input
                   v-model="postForm.author"
                   placeholder="作者"
@@ -33,7 +33,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label-width="labelWidth" label="出版社：">
+              <el-form-item :label-width="labelWidth" label="出版社：" prop="publisher">
                 <el-input
                   v-model="postForm.publisher"
                   placeholder="出版社"
@@ -44,7 +44,7 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item :label-width="labelWidth" label="语言：">
+              <el-form-item :label-width="labelWidth" label="语言：" prop="language">
                 <el-input
                   v-model="postForm.language"
                   placeholder="语言"
@@ -141,6 +141,13 @@ import Sticky from '../../../components/Sticky'
 import Warning from './warning'
 import EbookUpload from '../../../components/EbookUpload'
 import MdIput from '../../../components/MDinput'
+import { createBook } from '../../../api/book'
+const fields = {
+  title: '标题',
+  author: '作者',
+  publisher: '出版社',
+  language: '语言'
+}
 export default {
   name: 'Details',
   components: {
@@ -153,37 +160,122 @@ export default {
     isEdit: Boolean
   },
   data() {
+    const validateRequire = (rule, value, callBack) => {
+      console.log(rule)
+      if (value.length === 0) {
+        callBack(new Error(fields[rule.field] + '必须填写'))
+      } else {
+        callBack()
+      }
+    }
     return {
       labelWidth: '120px',
       loading: false,
+      fileList: [],
       postForm: {
-        status: '',
+        ebook_url: ''
+      },
+      defaultForm: {
         title: '',
         author: '',
         publisher: '',
         language: '',
         rootFile: '',
-        filePath: '',
-        unzipPath: '',
-        coverPath: '',
-        fileName: '',
         cover: '',
-        contents: ''
+        originalname: '',
+        url: '',
+
+        fileName: '',
+        coverPath: '',
+        filePath: '',
+        unzipPath: ''
+      },
+      ruleForm: {
+        title: [{ validator: validateRequire }],
+        author: [{ validator: validateRequire }],
+        publisher: [{ validator: validateRequire }],
+        language: [{ validator: validateRequire }]
       }
     }
   },
   methods: {
-    onUploadSuccess() {
-      console.log('onUploadSuccess')
+    onContentClick(data) {
+      if (data && data.text) {
+        window.open(data.text)
+      }
+    },
+    setData(data) {
+      const {
+        title,
+        author,
+        publisher,
+        language,
+        rootFile,
+        cover,
+        originalname,
+        url,
+        contents,
+        contentsTree,
+        fileName,
+        coverPath,
+        filePath,
+        unzipPath
+      } = data
+
+      this.postForm = {
+        ...this.postForm,
+        title,
+        author,
+        publisher,
+        language,
+        rootFile,
+        cover,
+        url,
+        originalname,
+        contents,
+        fileName,
+        coverPath,
+        filePath,
+        unzipPath
+      }
+      this.fileList = [{ name: originalname, url }]
+      console.log(this.fileList)
+      this.contentsTree = contentsTree
+    },
+    onUploadSuccess(data) {
+      this.setData(data)
+    },
+    setDefault() {
+      this.postForm = Object.assign({}, this.defaultForm)
     },
     onUploadRemove() {
-      console.log('onUploadRemove')
+      // console.log('onUploadRemove')
+      this.setDefault()
+      this.contentsTree = []
     },
     submitForm() {
-      this.loading = true
-      setTimeout(() => {
-        this.loading = false
-      }, 1000)
+      if (!this.loading) {
+        this.loading = true
+
+        this.$refs.postForm.validate((valid, fields) => {
+          console.log(valid, fields)
+          if (valid) {
+          // 111
+            const book = Object.assign({}, this.postForm)
+            delete book.contentsTree
+            delete book.contents
+            if (!this.isEdit) {
+              createBook(book)
+            } else {
+              // updateBook(book)
+            }
+          } else {
+            const message = fields[Object.keys(fields)[0]][0].message
+            this.$message.error(message)
+            this.loading = false
+          }
+        })
+      }
     },
     showGuide() {
       console.log('show guide..')

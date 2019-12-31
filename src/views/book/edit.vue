@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Details />
+    <Details :is-edit="isEdit" />
   </div>
 </template>
 
@@ -11,6 +11,11 @@ export default {
   name: 'Edit',
   components: {
     Details
+  },
+  data() {
+    return {
+      isEdit: true
+    }
   }
 }
 </script>

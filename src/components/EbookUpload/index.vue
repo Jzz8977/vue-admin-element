@@ -64,13 +64,13 @@ export default {
       this.$emit('beforeUpload', file)
     },
     onSuccess(response, file) {
-      const { code, msg } = response
+      const { code, msg, data } = response
       if (code === 0) {
         this.$message.success(msg)
-        this.$emit('onSuccess', file)
+        this.$emit('onSuccess', data)
       } else {
         this.$message.error(msg && `上传失败，失败原因: ${msg}` || msg)
-        this.$emit('onError', file)
+        this.$emit('onError', data)
       }
     },
     onRemove(file) {
