@@ -173,7 +173,6 @@ export default {
       loading: false,
       fileList: [],
       postForm: {
-        ebook_url: ''
       },
       defaultForm: {
         title: '',
@@ -184,7 +183,6 @@ export default {
         cover: '',
         originalname: '',
         url: '',
-
         fileName: '',
         coverPath: '',
         filePath: '',
@@ -197,6 +195,9 @@ export default {
         language: [{ validator: validateRequire }]
       }
     }
+  },
+  created() {
+    console.log(this.$route)
   },
   methods: {
     onContentClick(data) {
@@ -247,11 +248,13 @@ export default {
     },
     setDefault() {
       this.postForm = Object.assign({}, this.defaultForm)
+      this.contentsTree = []
+      this.fileList = []
+      this.$refs.postForm.resetFields()
     },
     onUploadRemove() {
       // console.log('onUploadRemove')
       this.setDefault()
-      this.contentsTree = []
     },
     submitForm() {
       if (!this.loading) {
@@ -263,10 +266,25 @@ export default {
           // 111
             const book = Object.assign({}, this.postForm)
             delete book.contentsTree
-            delete book.contents
+            console.log(book)
             if (!this.isEdit) {
-              createBook(book)
+              createBook(book).then(res => {
+                const { message } = res
+                this.$notify({
+                  title: '操作作成功',
+                  message,
+                  type: 'success',
+                  duration: 2000
+                })
+                this.loading = false
+                // this.setDefault()
+
+              // eslint-disable-next-line handle-callback-err
+              }).catch(err => {
+                this.loading = false
+              })
             } else {
+
               // updateBook(book)
             }
           } else {
