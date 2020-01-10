@@ -57,14 +57,20 @@
 
 <script>
 import CountTo from 'vue-count-to'
-
+// import { fourTips } from '@/api/data'
 export default {
   components: {
     CountTo
   },
+  mounted() {
+    this.getDate()
+  },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
+    },
+    getDate() {
+      // fourTips()
     }
   }
 }

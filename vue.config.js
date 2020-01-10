@@ -1,7 +1,6 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -35,7 +34,7 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
+    }
     // proxy: {
     //   // change xxx-api/login => mock/login
     //   // detail: https://cli.vuejs.org/config/#devserver-proxy

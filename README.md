@@ -142,10 +142,10 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 ```bash
 # clone the project
-git clone https://github.com/PanJiaChen/vue-element-admin.git
+git clone https://github.com/Jzz8977/VDE_Management
 
 # enter the project directory
-cd vue-element-admin
+cd VDE_Management
 
 # install dependency
 npm install

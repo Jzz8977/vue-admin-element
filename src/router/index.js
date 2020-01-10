@@ -124,6 +124,23 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/three',
+    component: Layout,
+    meta: { title: 'ThreeJS', icon: 'documentation' },
+    children: [
+      {
+        name: 'three',
+        path: '/three/subject',
+        component: () => import('@/views/three/index'),
+        meta: {
+          title: '3D',
+          icon: 'documentation',
+          roles: ['admin', ['editor']]
+        }
+      }
+    ]
+  },
+  {
     path: '/error',
     component: Layout,
     redirect: 'noRedirect',
