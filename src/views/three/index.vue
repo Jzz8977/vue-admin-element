@@ -1,6 +1,6 @@
 <template>
   <div style="height:100%;width:100%">
-    <div id="container" style="height:800px" />
+    <div id="container" style="height:850px" />
   </div>
 </template>
 
@@ -70,7 +70,7 @@ export default {
     }
   },
   mounted() {
-    this.threeStart()
+      this.threeStart()
   },
   methods: {
     threeStart() {
@@ -108,6 +108,7 @@ export default {
     initThree() {
       this.width = document.getElementById('container').clientWidth
       this.height = document.getElementById('container').clientHeight
+      console.log(this.height)
       this.renderer = new this.$three.WebGLRenderer({
         antialias: true,
         alpha: true
@@ -119,9 +120,9 @@ export default {
     },
     initCamera() {
       this.camera = new this.$three.PerspectiveCamera(75, this.width / this.height, 0.1, 1000)
-      this.camera.position.x = -500
-      this.camera.position.y = 500
-      this.camera.position.z = -500
+      this.camera.position.x = -300
+      this.camera.position.y = 300
+      this.camera.position.z = -300
 
       // this.camera.lookAt(new this.$three.Vector3(20, 10, 0))
     },

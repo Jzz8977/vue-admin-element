@@ -20,7 +20,8 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src="headPic" class="user-avatar">
+          <!-- <img :src="avatar" class="user-avatar"> -->
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -46,6 +47,7 @@
 </template>
 
 <script>
+import headPic from '@/assets/img/time.jpg'
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
@@ -55,6 +57,11 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 
 export default {
+  data(){
+    return{
+      headPic
+    }
+  },
   components: {
     Breadcrumb,
     Hamburger,

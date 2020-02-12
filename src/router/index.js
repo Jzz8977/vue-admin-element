@@ -141,6 +141,64 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/list',
+    component: Layout,
+    meta: { title: 'Nested Routes', icon: 'nested' },
+    redirect: '/list/index',
+    name: '零级',
+    children: [
+      {
+        name: '一级1',
+        path: 'index',
+        component: () => import('@/views/list/index'),
+        meta: {
+          title: 'level1',
+          icon: 'edit',
+        }
+      },
+      {
+        name: 'level2',
+        path: 'level2',
+        component: () => import('@/views/list/level2'),
+        meta: {
+          title: '1级2',
+          icon: 'edit',
+        },
+        children: [
+          {
+            path: 'menu1-2-1',
+            component: () => import('@/views/list/level2-1'),
+            name: 'Menu1-2-1',
+            meta: { title: 'Menu 1-2-1' }
+          },
+          {
+            path: 'menu1-2-2',
+            component: () => import('@/views/list/level2-2'),
+            name: 'Menu1-2-2',
+            meta: { title: 'Menu 1-2-2' }
+          }
+        ]
+      },
+    ]
+  },
+  {
+    path: '/table',
+    component: Layout,
+    meta: { title: 'Table', icon: 'documentation' },
+    children: [
+      {
+        name: 'table',
+        path: '/table/index',
+        component: () => import('@/views/table/index'),
+        meta: {
+          title: 'Table',
+          icon: 'documentation',
+          roles: ['admin', ['editor']]
+        }
+      }
+    ]
+  },
+  {
     path: '/error',
     component: Layout,
     redirect: 'noRedirect',
